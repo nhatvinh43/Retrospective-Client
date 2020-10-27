@@ -1,0 +1,33 @@
+@import "~antd/dist/antd.css";
+
+.layout {
+  height: 100vh;
+}
+
+.body {
+  margin: 50px;
+}
+
+.addIcons {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 30px;
+  align-self: center;
+  cursor: pointer;
+}
+
+.textarea {
+  width: 400px;
+  margin-bottom: 20px;
+  border-radius: 20px;
+  border: 0.5px dashed;
+  resize: none;
+}
+
+.hidden {
+  display: none;
+}
+
+#wentWellInput {
+  transition-duration: 200ms;
+}
