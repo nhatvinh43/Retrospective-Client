@@ -30,7 +30,7 @@ function Homepage()
       return;
     }
 
-    fetch('http://localhost:8080/boards/add', {
+    fetch('https://retrospective-server-1712914.herokuapp.com/boards/add', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ function Homepage()
 
   const handleDeleteBoard = (id) =>
   {
-    fetch('http://localhost:8080/boards/delete', {
+    fetch('https://retrospective-server-1712914.herokuapp.com/boards/delete', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -127,7 +127,7 @@ function Homepage()
   {
     const fetchBoardData = async () =>
     {
-      const result = await (await fetch('http://localhost:8080/boards')).json();
+      const result = await (await fetch('https://retrospective-server-1712914.herokuapp.com/boards')).json();
       setBoardData(result);
       setLoading(false);
     };
