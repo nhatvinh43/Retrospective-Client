@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/retrospective-client/static/css/main.93a429a8.chunk.css",
+    "main.js": "/retrospective-client/static/js/main.aa6f3f8a.chunk.js",
+    "main.js.map": "/retrospective-client/static/js/main.aa6f3f8a.chunk.js.map",
+    "runtime-main.js": "/retrospective-client/static/js/runtime-main.e4d99d07.js",
+    "runtime-main.js.map": "/retrospective-client/static/js/runtime-main.e4d99d07.js.map",
+    "static/css/2.fd8a6fac.chunk.css": "/retrospective-client/static/css/2.fd8a6fac.chunk.css",
+    "static/js/2.7a529b6b.chunk.js": "/retrospective-client/static/js/2.7a529b6b.chunk.js",
+    "static/js/2.7a529b6b.chunk.js.map": "/retrospective-client/static/js/2.7a529b6b.chunk.js.map",
+    "static/js/3.bfac201f.chunk.js": "/retrospective-client/static/js/3.bfac201f.chunk.js",
+    "static/js/3.bfac201f.chunk.js.map": "/retrospective-client/static/js/3.bfac201f.chunk.js.map",
+    "index.html": "/retrospective-client/index.html",
+    "static/css/2.fd8a6fac.chunk.css.map": "/retrospective-client/static/css/2.fd8a6fac.chunk.css.map",
+    "static/css/main.93a429a8.chunk.css.map": "/retrospective-client/static/css/main.93a429a8.chunk.css.map",
+    "static/js/2.7a529b6b.chunk.js.LICENSE.txt": "/retrospective-client/static/js/2.7a529b6b.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.e4d99d07.js",
+    "static/css/2.fd8a6fac.chunk.css",
+    "static/js/2.7a529b6b.chunk.js",
+    "static/css/main.93a429a8.chunk.css",
+    "static/js/main.aa6f3f8a.chunk.js"
+  ]
+}
