@@ -4,6 +4,7 @@ import './index.css';
 import { Typography, Modal, Layout, Result, Button } from 'antd';
 import { ShareAltOutlined, CopyOutlined, DeleteOutlined } from '@ant-design/icons';
 import ConfirmModal from '../modal-confirm/index';
+import avatar from '../../../public/board-avt.jpg';
 
 const BoardListItem = (props) =>
 {
@@ -34,7 +35,7 @@ const BoardListItem = (props) =>
         <Layout>
             <Card title={props.board.name} className="card" style={{ width: 280, height: 290 }} hoverable="true" extra={created}
                 cover={
-                    <img alt="avatar" src="/board-avt.jpg"/>
+                    <img alt="avatar" src={avatar}/>
                 }
                 actions={[
                 <ShareAltOutlined key= "share" />,

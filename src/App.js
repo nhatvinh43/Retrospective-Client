@@ -14,13 +14,13 @@ function App()
   return (
     <div>
       <Switch>
-        <Route exact path="/dashboard">
+        <Route path="/dashboard">
           <Homepage />
         </Route>
-        <Route exact path="/board/:id">
+        <Route path="/board/:id">
           <BoardDetails />
         </Route>
-        <Route exact path="/">
+        <Route path="/">
           <Redirect to="/dashboard" />
         </Route>
       </Switch>

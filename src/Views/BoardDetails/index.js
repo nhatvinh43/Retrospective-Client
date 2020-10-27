@@ -3,7 +3,7 @@ import './index.css';
 import CustomHeader from '../../Components/header/index';
 import { Layout, Col, Row, Menu, Typography, Card, notification, Button, Input } from 'antd';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { ArrowLeftOutlined, PlusCircleFilled, DeleteFilled} from '@ant-design/icons';
+import { ArrowLeftOutlined, PlusCircleFilled, DeleteFilled } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 const { Header, Footer, Content } = Layout;
 const { Title, Text, Paragraph } = Typography;
