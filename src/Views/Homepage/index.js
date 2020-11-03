@@ -1,28 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import './index.css';
+  import { PlusCircleTwoTone } from '@ant-design/icons';
+import { Button, Card, Col, Layout, notification, Row } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import BoardListItem from '../../Components/board-list-items/index';
 import NewBoardModal from '../../Components/modal-new-board/index';
-import CustomHeader from '../../Components/header/index';
-import { Layout, Col, Row, Typography, Card, notification, Button } from 'antd';
-import { PlusCircleTwoTone } from '@ant-design/icons';
-import { useHistory } from 'react-router-dom';
+import './index.css';
 const { Content } = Layout;
-const { Title } = Typography;
 
-function Homepage()
+
+
+function Homepage(props)
 {
+  const token = localStorage.getItem('token');
+  const [isLogin, setIsLogin] = useState(props.isLogin);
   const history = useHistory();
   const [boardData, setBoardData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [newBoardName, setNewBoardName] = useState("");
 
-  const handleBoardClick = (_id) =>
-  {
-    history.push('/board/' + _id);
-  }
-
-  const onCreateBoard = () =>
+  const onCreateBoard = async () =>
   {
     if (!newBoardName)
     {
@@ -30,40 +27,41 @@ function Homepage()
       return;
     }
 
-    fetch('https://retrospective-server-1712914.herokuapp.com/boards/add', {
+
+    const result = await fetch(process.env.REACT_APP_HOST + '/boards/add', {
       method: 'POST',
+     
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': 'JWT ' + token,
       },
       body: JSON.stringify({
         name: newBoardName,
         created: new Date(),
       })
-    }).then(result => result.json()).then(data =>
+    });
+
+    const msg = await result.json();
+
+    if (result.status === 200)
     {
-      if (data)
-      {
-        if (data._id)
-        {
-          let temp = boardData.slice();
-          temp.unshift(data);
-          setBoardData(temp);
-          notification.success({
-            message: "Board creation successful!",
-            duration: 1.5,
-            placement: "bottomLeft"
-          })
-        } else
-        {
-          notification.error({
-            message: "Board creation failed!",
-            duration: 1.5,
-            placement: "bottomLeft"
-          })
-        }
-      }
+        let temp = boardData.slice();
+        temp.unshift(msg);
+        setBoardData(temp);
+        notification.success({
+          message: "Board creation successful!",
+          duration: 1.5,
+          placement: "bottomLeft"
+        })
+    } else
+    {
+      notification.error({
+        message: msg.message,
+        duration: 1.5,
+        placement: "bottomLeft"
+      })
     }
-    );
+  
 
     setIsModalOpened(false);
     setNewBoardName("");
@@ -83,10 +81,11 @@ function Homepage()
 
   const handleDeleteBoard = (id) =>
   {
-    fetch('https://retrospective-server-1712914.herokuapp.com/boards/delete', {
+    fetch(process.env.REACT_APP_HOST + '/boards/delete', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': 'JWT ' + token, 
       },
       body: JSON.stringify({
         _id: id
@@ -125,60 +124,70 @@ function Homepage()
   
   useEffect(() =>
   {
+
+    if(!token)
+    {
+      props.history.push('/user');
+    }
     const fetchBoardData = async () =>
     {
-      const result = await (await fetch('https://retrospective-server-1712914.herokuapp.com/boards')).json();
-      setBoardData(result);
+      const result = (await fetch(process.env.REACT_APP_HOST + '/boards', {
+        method: 'GET',
+        headers: {
+          'Authorization': 'JWT ' + token
+        }
+      }));
+
+      const msg = await result.json();
+
+      if (result.status !== 400)
+      {
+        setBoardData(msg.data);
+      }
       setLoading(false);
     };
 
     fetchBoardData();
 
-  }, []);
-  
+  }, [isLogin]);
 
   return (
     <Layout className="layout">
-      <CustomHeader />
       <Content className="body">
-        <Title level="1">
-          My boards
-        </Title>
-        <Row gutter={[16, 16]} align="middle" justify="center">
+      <Row gutter={[16, 16]} align="middle" justify="center">
 
-        <Col className="gutter-row" >   
-            <Button type="dashed" id="addBoardBtn" shape="round " onClick = {() => setIsModalOpened(true)}>
-              <PlusCircleTwoTone style={{ fontSize: 30 }} key="newBoard"></PlusCircleTwoTone>
-            </Button>
-          </Col>
+      <Col className="gutter-row" >   
+          <Button type="dashed" id="addBoardBtn" shape="round " onClick = {() => setIsModalOpened(true)}>
+            <PlusCircleTwoTone style={{ fontSize: 30 }} key="newBoard"></PlusCircleTwoTone>
+          </Button>
+        </Col>
 
-          {boardData.map(item =>
-            <Col className="gutter-row" onClick = {() => handleBoardClick(item._id)}>
-              <BoardListItem key={item._id} board={item} loading="false" onConfirm={() =>  handleDeleteBoard(item._id)}></BoardListItem>
-            </Col>
-          )}
+        {boardData.map(item =>
+          <Col className="gutter-row" onClick={() => { props.history.push('/boards/' + item._id) }}>
+            <BoardListItem key={item._id} board={item} onConfirm={() =>  handleDeleteBoard(item._id)}></BoardListItem>
+          </Col>
+        )}
 
-          
-          <Col className="gutter-row">   
-            <Card style={{ width: 300 }} className={loading? "": "hidden"} loading={loading}></Card>
-          </Col>
-          <Col className="gutter-row">   
-            <Card style={{ width: 300 }} className={loading? "": "hidden"} loading={loading}></Card>
-          </Col>
-          <Col className="gutter-row">   
-            <Card style={{ width: 300 }} className={loading? "": "hidden"} loading={loading}></Card>
-          </Col>
-          <Col className="gutter-row">   
-            <Card style={{ width: 300 }} className={loading? "": "hidden"} loading={loading}></Card>
-          </Col>
-          <Col className="gutter-row">   
-            <Card style={{ width: 300 }} className={loading? "": "hidden"} loading={loading}></Card>
-          </Col>
-         
-        </Row>
-            <NewBoardModal isModalOpened = {isModalOpened} onCancel= {onCancel} onConfirm = {onCreateBoard} onChange={onChange} newBoardName={newBoardName}></NewBoardModal>
+        
+        <Col className="gutter-row">   
+          <Card style={{ width: 300 }} className={loading? "": "hidden"} loading={loading}></Card>
+        </Col>
+        <Col className="gutter-row">   
+          <Card style={{ width: 300 }} className={loading? "": "hidden"} loading={loading}></Card>
+        </Col>
+        <Col className="gutter-row">   
+          <Card style={{ width: 300 }} className={loading? "": "hidden"} loading={loading}></Card>
+        </Col>
+        <Col className="gutter-row">   
+          <Card style={{ width: 300 }} className={loading? "": "hidden"} loading={loading}></Card>
+        </Col>
+        <Col className="gutter-row">   
+          <Card style={{ width: 300 }} className={loading? "": "hidden"} loading={loading}></Card>
+        </Col>
+      
+      </Row>
+          <NewBoardModal isModalOpened = {isModalOpened} onCancel= {onCancel} onConfirm = {onCreateBoard} onChange={onChange} newBoardName={newBoardName}></NewBoardModal>
       </Content>
-    
     </Layout>
   );
 }

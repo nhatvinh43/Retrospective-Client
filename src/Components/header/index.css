@@ -1,0 +1,27 @@
+@import "~antd/dist/antd.css";
+
+.header-menu {
+  justify-content: end;
+}
+
+.header {
+  justify-content: space-between;
+}
+
+.input {
+  border-radius: 20px;
+  height: 40px;
+  width: 300px;
+  margin: auto;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  text-align: center;
+}

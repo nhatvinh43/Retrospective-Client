@@ -1,18 +1,30 @@
-import { Layout, Menu } from 'antd';
-import React from 'react';
+import { Layout, Menu, Button, Modal, Form, Input } from 'antd';
+import './index.css';
+import React, {useState} from 'react';
 const { Header } = Layout;
 
 const CustomHeader = (props) =>
 {
+    
+    const isLogin = props.visibility;
+    let loginAndSignUp = "";
+
+    if (isLogin)
+    {
+        loginAndSignUp =
+            (<Menu theme="light" mode="horizontal" className="header-menu">
+                <Button type="primary" shape="round" onClick = {props.handleLogout}>Logout </Button>
+            </Menu>)
+    }
     return (
-        <Header className="header">
-            <div className="logo" />
-            <Menu theme="light" mode="horizontal" defaultSelectedKeys={['2']}>
-                <Menu.Item key="1">nav 1</Menu.Item>
-                <Menu.Item key="2">nav 2</Menu.Item>
-                <Menu.Item key="3">nav 3</Menu.Item>
-            </Menu>
-        </Header>
+        <div>
+            <Header className= {isLogin? "header" : "hidden"}>
+                <div className="logo" />
+                {loginAndSignUp}
+            </Header>
+            
+        </div>
+        
     )
 }
 

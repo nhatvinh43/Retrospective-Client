@@ -4,7 +4,7 @@ import './index.css';
 import { Typography, Modal, Layout, Result, Button } from 'antd';
 import { ShareAltOutlined, CopyOutlined, DeleteOutlined } from '@ant-design/icons';
 import ConfirmModal from '../modal-confirm/index';
-import avatar from '../../../public/board-avt.jpg';
+import avatar from './board-avt.jpg';
 
 const BoardListItem = (props) =>
 {
