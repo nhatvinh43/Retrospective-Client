@@ -53,23 +53,13 @@ const CustomHeader = (props) =>
             <Spin className="spin" spinning={spinning} size="default" >
                 <Modal centered visible={modalOpen} footer={[]} onCancel={handleCancel}>
                 <h1>Account</h1>
-                <Form form={form} className="form" name="login" initialValues={{ remember: false,}} onFinish={(values) => handleUpdateUser(values)}>
-                    <Form.Item name="username" label="Username"
-                        rules={[
-                        {
-                            required: true,
-                            message: 'Please input your username!',
-                        },
-                        ]}
-                    >
-                        <Input className="input" placeholder="Username" />
-                    </Form.Item>
-
+                    <Form form={form} className="form" name="login" initialValues={{ remember: false, }} onFinish={(values) => handleUpdateUser(values)}>
+                        
                     <Form.Item name="email" label="Email"
                         rules={[
                         {
                             required: true,
-                            message: 'Please input your username!',
+                            message: 'Please input your email!',
                         },
                         ]}
                     >
@@ -80,7 +70,7 @@ const CustomHeader = (props) =>
                         rules={[
                         {
                             required: true,
-                            message: 'Please input your username!',
+                            message: 'Please input your full name!',
                         },
                         ]}
                     >
@@ -91,7 +81,7 @@ const CustomHeader = (props) =>
                         rules={[
                         {
                             required: true,
-                            message: 'Please input your username!',
+                            message: 'Please input your dob!',
                         },
                         ]}
                     >

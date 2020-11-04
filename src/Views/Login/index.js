@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { Result, Col, Row, Button, Modal, Form, Input, DatePicker } from 'antd';
-import './index.css';
+import './index.css'
 
 const LoginPrompt = (props) =>
 {
@@ -94,7 +94,7 @@ const LoginPrompt = (props) =>
                         rules={[
                         {
                             required: true,
-                            message: 'Please input your username!',
+                            message: 'Please input your email!',
                         },
                         ]}
                     >
@@ -105,7 +105,7 @@ const LoginPrompt = (props) =>
                         rules={[
                         {
                             required: true,
-                            message: 'Please input your username!',
+                            message: 'Please input your full name!',
                         },
                         ]}
                     >
@@ -116,11 +116,33 @@ const LoginPrompt = (props) =>
                         rules={[
                         {
                             required: true,
-                            message: 'Please input your username!',
+                            message: 'Please input your dob!',
                         },
                         ]}
                     >
                         <DatePicker />
+                    </Form.Item>
+
+                    <Form.Item name="password"
+                        rules={[
+                        {
+                            required: true,
+                            message: 'Please input your password!',
+                        },
+                        ]}
+                    >
+                    <Input.Password className="input" placeholder="Password" />
+                    </Form.Item>
+
+                    <Form.Item name="password_confirm"
+                        rules={[
+                        {
+                            required: true,
+                            message: 'Please input your confirm password!',
+                        },
+                        ]}
+                    >
+                    <Input.Password className="input" placeholder="Confirm password" />
                     </Form.Item>
                     
                     <Button type="primary" shape='round' htmlType="submit">Register</Button>
