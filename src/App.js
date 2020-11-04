@@ -123,9 +123,73 @@ function App()
     
   }
 
+  const handleGetUser = async () =>
+  {
+    const result = await fetch(process.env.REACT_APP_HOST + "/user", {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization' : 'JWT ' + token,
+      }
+    }
+    );
+
+    const msg = await result.json();
+
+    if (result.status !== 200)
+    {
+      notification.error({
+        message: msg.message,
+        duration: 1.5,
+        placement: "bottomLeft"
+      });
+      return {};
+    }
+    else
+    {
+      return msg;
+    }
+  }
+
+  const handleUpdateUser = async (values) =>
+  {
+    
+    const result = await fetch(process.env.REACT_APP_HOST + '/update', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'JWT ' + token
+        },
+        body: JSON.stringify({
+            ...values,
+        })
+    });
+
+    const msg = await result.json();
+
+    if(result.status ===200)
+    {
+        notification.success({
+            message: "Account info updated",
+            duration: 1.5,
+            placement: "bottomLeft",
+        });
+
+        console.log(msg);
+    }
+    else
+    {
+        notification.error({
+            message: "Account info update failed",
+            duration: 1.5,
+            placement: "bottomLeft",
+        });
+    }
+  }
+
   return (
     <div>
-        <CustomHeader history = {history} handleHistory = {handleHistory} back={shouldBack} handleLogout = {handleLogout} visibility={isLogin} />
+        <CustomHeader handleUpdateUser={handleUpdateUser} handleGetUser= {handleGetUser} history = {history} handleHistory = {handleHistory} back={shouldBack} handleLogout = {handleLogout} visibility={isLogin} />
       <Switch>
         <Route path="/dashboard" render={props => <Homepage {...props} />} >
           

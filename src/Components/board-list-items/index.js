@@ -1,10 +1,9 @@
-import { Card } from 'antd';
-import React, {useState} from 'react';
-import './index.css';
-import { Typography, Modal, Layout, Result, Button } from 'antd';
-import { ShareAltOutlined, CopyOutlined, DeleteOutlined } from '@ant-design/icons';
+import { CopyOutlined, DeleteOutlined, ShareAltOutlined } from '@ant-design/icons';
+import { Card, Layout, notification } from 'antd';
+import React, { useState } from 'react';
 import ConfirmModal from '../modal-confirm/index';
 import avatar from './board-avt.jpg';
+import './index.css';
 
 const BoardListItem = (props) =>
 {
@@ -31,6 +30,18 @@ const BoardListItem = (props) =>
         setModalOpened(true);
     }
 
+    const onShare = (e) =>
+    {
+        e.stopPropagation();
+        navigator.clipboard.writeText(process.env.REACT_APP_URL + process.env.PUBLIC_URL + "/#" + "/boards/" + props.board._id);
+
+        notification.success({
+            message: "Board URL copied to clipboard!",
+            duration: 1.5,
+            placement: "bottomLeft",
+          });
+    }
+
     return (
         <Layout>
             <Card title={props.board.name} className="card" style={{ width: 280, height: 290 }} hoverable="true" extra={created}
@@ -38,9 +49,8 @@ const BoardListItem = (props) =>
                     <img alt="avatar" src={avatar}/>
                 }
                 actions={[
-                <ShareAltOutlined key= "share" />,
-                <CopyOutlined key = "clone" />,
-                    <DeleteOutlined key="delete" onClick={onDelete}/>
+                <ShareAltOutlined key= "share" onClick = {onShare} />,
+                <DeleteOutlined key="delete" onClick={onDelete}/>
                 ]} >
             </Card>
 

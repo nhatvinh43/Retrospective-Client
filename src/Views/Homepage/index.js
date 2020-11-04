@@ -1,5 +1,5 @@
   import { PlusCircleTwoTone } from '@ant-design/icons';
-import { Button, Card, Col, Layout, notification, Row } from 'antd';
+import { Button, Card, Col, Layout, notification, Row, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import BoardListItem from '../../Components/board-list-items/index';
@@ -13,7 +13,7 @@ function Homepage(props)
 {
   const token = localStorage.getItem('token');
   const [isLogin, setIsLogin] = useState(props.isLogin);
-  const history = useHistory();
+  const [spinning, setSpinning] = useState(false);
   const [boardData, setBoardData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpened, setIsModalOpened] = useState(false);
@@ -27,6 +27,9 @@ function Homepage(props)
       return;
     }
 
+    setSpinning(true);
+    setIsModalOpened(false);
+    setNewBoardName("");
 
     const result = await fetch(process.env.REACT_APP_HOST + '/boards/add', {
       method: 'POST',
@@ -62,9 +65,7 @@ function Homepage(props)
       })
     }
   
-
-    setIsModalOpened(false);
-    setNewBoardName("");
+    setSpinning(false);
   }
 
   const onCancel = () =>
@@ -81,6 +82,9 @@ function Homepage(props)
 
   const handleDeleteBoard = (id) =>
   {
+
+    setSpinning(true);
+
     fetch(process.env.REACT_APP_HOST + '/boards/delete', {
       method: 'DELETE',
       headers: {
@@ -118,7 +122,7 @@ function Homepage(props)
         });
       }
     })
-
+    setSpinning(false);
    
   }
   
@@ -154,38 +158,40 @@ function Homepage(props)
   return (
     <Layout className="layout">
       <Content className="body">
-      <Row gutter={[16, 16]} align="middle" justify="center">
 
-      <Col className="gutter-row" >   
-          <Button type="dashed" id="addBoardBtn" shape="round " onClick = {() => setIsModalOpened(true)}>
-            <PlusCircleTwoTone style={{ fontSize: 30 }} key="newBoard"></PlusCircleTwoTone>
-          </Button>
-        </Col>
+        <Spin size="large" spinning={spinning} className="spin">
+          <Row gutter={[16, 16]} align="middle" justify="center">
+            <Col className="gutter-row" >   
+              <Button type="dashed" id="addBoardBtn" shape="round " onClick = {() => setIsModalOpened(true)}>
+                <PlusCircleTwoTone style={{ fontSize: 30 }} key="newBoard"></PlusCircleTwoTone>
+              </Button>
+            </Col>
 
-        {boardData.map(item =>
-          <Col className="gutter-row" onClick={() => { props.history.push('/boards/' + item._id) }}>
-            <BoardListItem key={item._id} board={item} onConfirm={() =>  handleDeleteBoard(item._id)}></BoardListItem>
-          </Col>
-        )}
+            {boardData.map(item =>
+              <Col className="gutter-row" onClick={() => { props.history.push('/boards/' + item._id) }}>
+                <BoardListItem key={item._id} board={item} onConfirm={() =>  handleDeleteBoard(item._id)}></BoardListItem>
+              </Col>
+            )}
 
+            <Col className="gutter-row">   
+              <Card style={{ width: 300 }} className={loading? "": "hidden"} loading={loading}></Card>
+            </Col>
+            <Col className="gutter-row">   
+              <Card style={{ width: 300 }} className={loading? "": "hidden"} loading={loading}></Card>
+            </Col>
+            <Col className="gutter-row">   
+              <Card style={{ width: 300 }} className={loading? "": "hidden"} loading={loading}></Card>
+            </Col>
+            <Col className="gutter-row">   
+              <Card style={{ width: 300 }} className={loading? "": "hidden"} loading={loading}></Card>
+            </Col>
+            <Col className="gutter-row">   
+              <Card style={{ width: 300 }} className={loading? "": "hidden"} loading={loading}></Card>
+            </Col>
+        </Row>
+      </Spin>
         
-        <Col className="gutter-row">   
-          <Card style={{ width: 300 }} className={loading? "": "hidden"} loading={loading}></Card>
-        </Col>
-        <Col className="gutter-row">   
-          <Card style={{ width: 300 }} className={loading? "": "hidden"} loading={loading}></Card>
-        </Col>
-        <Col className="gutter-row">   
-          <Card style={{ width: 300 }} className={loading? "": "hidden"} loading={loading}></Card>
-        </Col>
-        <Col className="gutter-row">   
-          <Card style={{ width: 300 }} className={loading? "": "hidden"} loading={loading}></Card>
-        </Col>
-        <Col className="gutter-row">   
-          <Card style={{ width: 300 }} className={loading? "": "hidden"} loading={loading}></Card>
-        </Col>
       
-      </Row>
           <NewBoardModal isModalOpened = {isModalOpened} onCancel= {onCancel} onConfirm = {onCreateBoard} onChange={onChange} newBoardName={newBoardName}></NewBoardModal>
       </Content>
     </Layout>

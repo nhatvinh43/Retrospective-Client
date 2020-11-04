@@ -1,24 +1,23 @@
-import { DeleteFilled, PlusCircleFilled } from '@ant-design/icons';
-import { Button, Card, Col, Input, Layout, notification, Row, Typography } from 'antd';
+import { Layout, notification, Row, Typography, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import Column from '../../Components/column/index';
 import './index.css';
-const { Header, Footer, Content } = Layout;
-const { Title, Text, Paragraph } = Typography;
-const { TextArea } = Input; 
-const Meta = { Card };
+const { Content } = Layout;
+const { Title } = Typography;
 
 require('dotenv').config();
 
 function BoardDetails(props)
 {
     const [board, setBoard] = useState({});
-    const [isLogin, setIsLogin] = useState(false);
+    const [spinning, setSpinning] = useState(false);
     const _id = props.match.params.id;
     const token = localStorage.getItem('token');
 
     const handleUpdatePost = async (postID, value, target) => {
+
+        setSpinning(true);
 
         const result = await fetch(process.env.REACT_APP_HOST + '/posts/update', {
             method: 'PUT',
@@ -57,10 +56,14 @@ function BoardDetails(props)
             });
         }
 
+        setSpinning(false);
+
     }
 
     const handleDeletePost = async (postID, target) =>
     {
+        setSpinning(true);
+
         const result = await fetch(process.env.REACT_APP_HOST + '/posts/delete', {
             method: 'DELETE',
             headers: {
@@ -95,11 +98,14 @@ function BoardDetails(props)
                 placement: "bottomLeft",
             });
         }
+
+        setSpinning(false);
     }
 
     const handleAddPost = async (target) =>
     {
-        
+        setSpinning(true);
+
         let textArea = document.querySelector('#' + target + 'Text');
         let inputSection = document.querySelector('#' + target + 'Input');
         const value = textArea.value;
@@ -162,10 +168,14 @@ function BoardDetails(props)
             });
 
         }
+
+        setSpinning(false);
     } 
 
     const handleChangeName = async (value) =>
     {
+        setSpinning(true);
+
         const result = await fetch(process.env.REACT_APP_HOST + '/boards/update', {
             method: 'PUT',
             headers: {
@@ -198,6 +208,7 @@ function BoardDetails(props)
                 placement: "bottomLeft",
             });
         }
+        setSpinning(false);
     }
 
     useEffect(() =>
@@ -238,19 +249,22 @@ function BoardDetails(props)
     }
 
     return (
-        <Layout className = "layout">
-            <Content className="body">
-                <Title editable={{onChange: handleChangeName}} level={2}>{board.name}</Title>
-                <DragDropContext>
-                    <Row gutter={[16, 16]} justify="center" align="top" style={{textAlign: 'center'}}>
-                        
-                        <Column name="Went Well" title="wentWell" color="#009688" toggleInput={toggleInput} handleAddPost={handleAddPost} board={board} handleDeletePost={handleDeletePost} handleUpdatePost={handleUpdatePost}/>
-                        <Column name="To Improve" title="toImprove" color="#e91e63" toggleInput={toggleInput} handleAddPost={handleAddPost} board={board} handleDeletePost={handleDeletePost} handleUpdatePost={handleUpdatePost}/>
-                        <Column name="Actions" title="actions" color="#9c27b0" toggleInput={toggleInput} handleAddPost={handleAddPost} board={board} handleDeletePost={handleDeletePost} handleUpdatePost={handleUpdatePost}/>
+        <Layout className="layout">
+            <Spin className="spin" size="large" spinning={spinning}>
+                <Content className="body">
+                    <Title editable={{onChange: handleChangeName}} level={2}>{board.name}</Title>
+                    <DragDropContext>
+                        <Row gutter={[16, 16]} className="row" justify="center" align="top" style={{textAlign: 'center'}}>
+                            
+                            <Column name="Went Well" title="wentWell" color="#009688" toggleInput={toggleInput} handleAddPost={handleAddPost} board={board} handleDeletePost={handleDeletePost} handleUpdatePost={handleUpdatePost}/>
+                            <Column name="To Improve" title="toImprove" color="#e91e63" toggleInput={toggleInput} handleAddPost={handleAddPost} board={board} handleDeletePost={handleDeletePost} handleUpdatePost={handleUpdatePost}/>
+                            <Column name="Actions" title="actions" color="#9c27b0" toggleInput={toggleInput} handleAddPost={handleAddPost} board={board} handleDeletePost={handleDeletePost} handleUpdatePost={handleUpdatePost}/>
 
-                    </Row>
-                </DragDropContext>
-            </Content>
+                        </Row>
+                    </DragDropContext>
+                </Content>
+            </Spin>
+            
         </Layout>
     )
 }
