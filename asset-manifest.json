@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/Retrospective-Client/static/css/main.610a4f59.chunk.css",
-    "main.js": "/Retrospective-Client/static/js/main.e49978eb.chunk.js",
-    "main.js.map": "/Retrospective-Client/static/js/main.e49978eb.chunk.js.map",
-    "runtime-main.js": "/Retrospective-Client/static/js/runtime-main.c10a5a2b.js",
-    "runtime-main.js.map": "/Retrospective-Client/static/js/runtime-main.c10a5a2b.js.map",
+    "main.css": "/Retrospective-Client/static/css/main.fdc4a745.chunk.css",
+    "main.js": "/Retrospective-Client/static/js/main.640d4f7f.chunk.js",
+    "main.js.map": "/Retrospective-Client/static/js/main.640d4f7f.chunk.js.map",
+    "runtime-main.js": "/Retrospective-Client/static/js/runtime-main.ae694a3b.js",
+    "runtime-main.js.map": "/Retrospective-Client/static/js/runtime-main.ae694a3b.js.map",
     "static/css/2.fd8a6fac.chunk.css": "/Retrospective-Client/static/css/2.fd8a6fac.chunk.css",
-    "static/js/2.e9048a53.chunk.js": "/Retrospective-Client/static/js/2.e9048a53.chunk.js",
-    "static/js/2.e9048a53.chunk.js.map": "/Retrospective-Client/static/js/2.e9048a53.chunk.js.map",
-    "static/js/3.843a0181.chunk.js": "/Retrospective-Client/static/js/3.843a0181.chunk.js",
-    "static/js/3.843a0181.chunk.js.map": "/Retrospective-Client/static/js/3.843a0181.chunk.js.map",
+    "static/js/2.7c3d6703.chunk.js": "/Retrospective-Client/static/js/2.7c3d6703.chunk.js",
+    "static/js/2.7c3d6703.chunk.js.map": "/Retrospective-Client/static/js/2.7c3d6703.chunk.js.map",
+    "static/js/3.776c7c22.chunk.js": "/Retrospective-Client/static/js/3.776c7c22.chunk.js",
+    "static/js/3.776c7c22.chunk.js.map": "/Retrospective-Client/static/js/3.776c7c22.chunk.js.map",
     "index.html": "/Retrospective-Client/index.html",
     "static/css/2.fd8a6fac.chunk.css.map": "/Retrospective-Client/static/css/2.fd8a6fac.chunk.css.map",
-    "static/css/main.610a4f59.chunk.css.map": "/Retrospective-Client/static/css/main.610a4f59.chunk.css.map",
-    "static/js/2.e9048a53.chunk.js.LICENSE.txt": "/Retrospective-Client/static/js/2.e9048a53.chunk.js.LICENSE.txt",
+    "static/css/main.fdc4a745.chunk.css.map": "/Retrospective-Client/static/css/main.fdc4a745.chunk.css.map",
+    "static/js/2.7c3d6703.chunk.js.LICENSE.txt": "/Retrospective-Client/static/js/2.7c3d6703.chunk.js.LICENSE.txt",
     "static/media/board-avt.d9d9b4dc.jpg": "/Retrospective-Client/static/media/board-avt.d9d9b4dc.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.c10a5a2b.js",
+    "static/js/runtime-main.ae694a3b.js",
     "static/css/2.fd8a6fac.chunk.css",
-    "static/js/2.e9048a53.chunk.js",
-    "static/css/main.610a4f59.chunk.css",
-    "static/js/main.e49978eb.chunk.js"
+    "static/js/2.7c3d6703.chunk.js",
+    "static/css/main.fdc4a745.chunk.css",
+    "static/js/main.640d4f7f.chunk.js"
   ]
 }
