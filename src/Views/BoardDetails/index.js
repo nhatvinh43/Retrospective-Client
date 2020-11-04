@@ -183,7 +183,7 @@ function BoardDetails(props)
                 'Authorization': 'JWT ' + token
             },
             body: JSON.stringify({
-                _id: _id,
+                ...board,
                 name: value,
             })
         });
