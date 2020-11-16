@@ -11,7 +11,7 @@ const { Content } = Layout;
 
 function Homepage(props)
 {
-  const token = localStorage.getItem('token');
+  const token = props.token;
   const [isLogin, setIsLogin] = useState(props.isLogin);
   const [spinning, setSpinning] = useState(false);
   const [boardData, setBoardData] = useState([]);
@@ -125,9 +125,11 @@ function Homepage(props)
     setSpinning(false);
    
   }
-  
+ 
   useEffect(() =>
   {
+
+    document.title="Dashboard";
 
     if(!token)
     {
@@ -153,11 +155,11 @@ function Homepage(props)
 
     fetchBoardData();
 
-  }, [isLogin]);
+  }, []);
 
   return (
-    <Layout className="layout">
-      <Content className="body">
+    <Layout className="layoutH">
+      <Content className="bodyH">
 
         <Spin size="large" spinning={spinning} className="spin">
           <Row gutter={[16, 16]} align="middle" justify="center">

@@ -2,6 +2,8 @@ import { Layout, notification, Row, Typography, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import Column from '../../Components/column/index';
+import socket from '../../socket';
+
 import './index.css';
 const { Content } = Layout;
 const { Title } = Typography;
@@ -10,10 +12,20 @@ require('dotenv').config();
 
 function BoardDetails(props)
 {
-    const [board, setBoard] = useState({});
-    const [spinning, setSpinning] = useState(false);
     const _id = props.match.params.id;
-    const token = localStorage.getItem('token');
+    const [board, setBoard] = useState({});
+    const [loading, setLoading] = useState(false);
+    const [spinning, setSpinning] = useState(false);
+    const token = props.token;
+
+    const handleSetBoard = (board) => {
+        if(!board)
+        {
+            return;
+        }
+        socket.emit('boardChanged', {...board, updatedOn: new Date().getTime()});
+        setBoard(board);
+    };
 
     const handleUpdatePost = async (postID, value, target) => {
 
@@ -43,9 +55,7 @@ function BoardDetails(props)
                 placement: "bottomLeft",
             });
 
-            console.log(msg);
-
-            setBoard(msg);
+            handleSetBoard(msg);
         }
         else
         {
@@ -87,7 +97,7 @@ function BoardDetails(props)
                 placement: "bottomLeft",
             });
 
-            setBoard(msg)
+            handleSetBoard(msg)
 
         }
         else
@@ -157,7 +167,7 @@ function BoardDetails(props)
 
             tempBoard[target].unshift(newValue);
 
-            setBoard(tempBoard);
+            handleSetBoard(tempBoard);
         }
         else
         {
@@ -185,6 +195,7 @@ function BoardDetails(props)
             body: JSON.stringify({
                 ...board,
                 name: value,
+                lastModified: new Date().getTime(),
             })
         });
 
@@ -198,7 +209,8 @@ function BoardDetails(props)
                 placement: "bottomLeft",
             });
 
-            setBoard(msg);
+            document.title = msg.name;
+            handleSetBoard(msg);
         }
         else
         {
@@ -211,12 +223,62 @@ function BoardDetails(props)
         setSpinning(false);
     }
 
+    const handleUpdateBoard = async (value) => {
+        setSpinning(true);
+
+        const result = await fetch(process.env.REACT_APP_HOST + '/boards/update', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'JWT ' + token
+            },
+            body: JSON.stringify({
+                ...value,
+                lastModified: new Date().getTime(),
+            })
+        });
+
+        const msg = await result.json();
+
+        if(result.status ===200)
+        {
+            notification.success({
+                message: "Board updated",
+                duration: 1.5,
+                placement: "bottomLeft",
+            });
+
+            handleSetBoard(msg);
+        }
+        else
+        {
+            notification.error({
+                message: "Board update failed",
+                duration: 1.5,
+                placement: "bottomLeft",
+            });
+        }
+
+        setSpinning(false);
+    }
+
     useEffect(() =>
     {
+        
         if (!token)
         {
             props.history.push('/user');
         }
+    
+        socket.on('boardChanged', board => {
+
+            if(board._id === _id)
+            {
+                setBoard(board);
+            }
+        });
+
+        setLoading(true);
 
         const fetchData = async () =>
         {
@@ -231,13 +293,47 @@ function BoardDetails(props)
             const msg = await result.json();
             if (result.status === 200 || result.status ===304)
             {
+                document.title= msg.name;
+
+                socket.emit('joinRoom', msg._id);
+
                 setBoard(msg);
+                setLoading(false);
             }
         }
 
         fetchData();
+
+        return () => {
+            socket.off('boardChanged', () => {});
+         };
+
     }, [])
 
+    const handleDragEnd = (result) => {
+
+        if (!result.destination) return;
+
+        const sourceIndex = result.source.index;
+        const destIndex = result.destination.index;
+        const sourceName = result.source.droppableId;
+        const destName = result.destination.droppableId;
+
+        if(sourceName===destName && sourceIndex === destIndex)
+        {
+            return;
+        }
+
+        let tempBoard = {};
+        Object.assign(tempBoard, board);
+
+        const [item] = tempBoard[sourceName].splice(sourceIndex, 1);
+
+        tempBoard[destName].splice(destIndex, 0, item);
+
+        handleUpdateBoard(tempBoard);
+        
+    }
 
     const toggleInput = (column, status) =>
     {
@@ -253,15 +349,14 @@ function BoardDetails(props)
             <Spin className="spin" size="large" spinning={spinning}>
                 <Content className="body">
                     <Title editable={{onChange: handleChangeName}} level={2}>{board.name}</Title>
-                    <DragDropContext>
-                        <Row gutter={[16, 16]} className="row" justify="center" align="top" style={{textAlign: 'center'}}>
-                            
-                            <Column name="Went Well" title="wentWell" color="#009688" toggleInput={toggleInput} handleAddPost={handleAddPost} board={board} handleDeletePost={handleDeletePost} handleUpdatePost={handleUpdatePost}/>
-                            <Column name="To Improve" title="toImprove" color="#e91e63" toggleInput={toggleInput} handleAddPost={handleAddPost} board={board} handleDeletePost={handleDeletePost} handleUpdatePost={handleUpdatePost}/>
-                            <Column name="Actions" title="actions" color="#9c27b0" toggleInput={toggleInput} handleAddPost={handleAddPost} board={board} handleDeletePost={handleDeletePost} handleUpdatePost={handleUpdatePost}/>
-
-                        </Row>
-                    </DragDropContext>
+                    
+                    <Row gutter={[16, 16]} className="row" justify="center" align="top" style={{textAlign: 'center'}}>
+                        <DragDropContext onDragEnd = {handleDragEnd}>
+                            <Column loading={loading} name="Went Well" title="wentWell" color="#009688" toggleInput={toggleInput} handleAddPost={handleAddPost} board={board} handleDeletePost={handleDeletePost} handleUpdatePost={handleUpdatePost}/>
+                            <Column loading={loading} name="To Improve" title="toImprove" color="#e91e63" toggleInput={toggleInput} handleAddPost={handleAddPost} board={board} handleDeletePost={handleDeletePost} handleUpdatePost={handleUpdatePost}/>
+                            <Column loading={loading} name="Actions" title="actions" color="#9c27b0" toggleInput={toggleInput} handleAddPost={handleAddPost} board={board} handleDeletePost={handleDeletePost} handleUpdatePost={handleUpdatePost}/>
+                        </DragDropContext>
+                    </Row>
                 </Content>
             </Spin>
             

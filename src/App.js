@@ -12,11 +12,13 @@ import {
   Route
 } from "react-router-dom";
 import LoginPrompt from './Views/Login/index';
+import SuccessLogin from './Views/SuccessLogin/index';
 
 function App()
 {
   const history = useHistory();
-  const token = localStorage.getItem('token');
+
+  const [token, setToken] = useState(localStorage.getItem('token'));
   const [shouldBack, setShouldBack] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
 
@@ -29,8 +31,16 @@ function App()
     {
       setIsLogin(true);  
     }
-  })
+  }, []);
     
+
+  const handleGoogleLogin = async () => {
+    window.open(process.env.REACT_APP_HOST + `/auth/google`, "_self");
+  }
+
+  const handleFacebookLogin = async () => {
+    window.open(process.env.REACT_APP_HOST + `/auth/facebook`, "_self");
+  }
 
   const handleHistory = (path) =>
   {
@@ -70,6 +80,7 @@ function App()
     else
     {
       localStorage.setItem('token', msg.token);
+      setToken(msg.token);
       setIsLogin(true);
       setModalLoginOpen(false);
       history.push('/dashboard');
@@ -79,6 +90,7 @@ function App()
   const handleLogout  = () =>
   {
     localStorage.removeItem('token');
+    setToken("");
     history.push('/user');
     setIsLogin(false);
   }
@@ -120,7 +132,6 @@ function App()
       });
       setModalRegisterIsOpen(false);
     }
-    
   }
 
   const handleGetUser = async () =>
@@ -191,18 +202,21 @@ function App()
     <div>
         <CustomHeader handleUpdateUser={handleUpdateUser} handleGetUser= {handleGetUser} history = {history} handleHistory = {handleHistory} back={shouldBack} handleLogout = {handleLogout} visibility={isLogin} />
       <Switch>
-        <Route path="/dashboard" render={props => <Homepage {...props} />} >
+        <Route exact path="/dashboard" render={props => <Homepage token = {token} {...props} />} >
           
         </Route>
-        <Route path="/boards/:id" render={(props) => <BoardDetails {...props} />} >
+        <Route path="/boards/:id" render={(props) => <BoardDetails token = {token} {...props} />} >
         
         </Route>
-        <Route path="/user">
-          <LoginPrompt isLogin={isLogin} handleLoginState={setIsLogin} handleLogin={handleLogin} handleRegister={handleRegister}/>
+        <Route exact path="/user" render={(props) => <LoginPrompt token = {token} {...props} handleFacebookLogin = {handleFacebookLogin} handleGoogleLogin = {handleGoogleLogin} isLogin={isLogin} handleLoginState={setIsLogin} handleLogin={handleLogin} handleRegister={handleRegister}/>}>
+      
         </Route>
-        <Route path="/">
+          <Route path="/auth/success" render={(props) => <SuccessLogin {...props} setToken = {setToken} setIsLogin ={setIsLogin} />} > 
+        </Route>
+        <Route exact path="/">
           <Redirect to="/dashboard" />
         </Route>
+       
       </Switch>
     </div>
   )

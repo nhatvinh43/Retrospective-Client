@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Result, Col, Row, Button, Modal, Form, Input, DatePicker } from 'antd';
+import { FacebookFilled, GoogleCircleFilled, SmileOutlined } from '@ant-design/icons';
 import './index.css'
 
 const LoginPrompt = (props) =>
@@ -8,6 +9,13 @@ const LoginPrompt = (props) =>
     const [modalLoginIsOpen, setModalLoginOpen] = useState(false);
     const [modalRegisterIsOpen, setModalRegisterIsOpen] = useState(false);
     
+    useEffect(() => {
+        document.title="Account"
+        if(props.token)
+        {
+            props.history.push('/dashboard');
+        }
+    }, []);
     
     const handleCancel = () =>
     {
@@ -25,20 +33,34 @@ const LoginPrompt = (props) =>
         setModalRegisterIsOpen(true);
     }
 
+    
+
     return (
         <div>
             <Result className="main"
-                status="403"
-                title="Login or register to view your boards!"
+                status="404"
+                title="Retrospective Manager"
+                subTitle="Login or register to get started!"
                 extra={
-                    <Row justify="center" gutter={[24,24]}>
-                        <Col>
-                            <Button type="dashed" shape="round" onClick = {handleOpenLoginDialog}>Login</Button>
-                        </Col>
-                        <Col>
-                            <Button type="primary" shape="round" onClick = {handleOpenRegisterDialog}>Register</Button>
-                        </Col>
-                    </Row>  
+                    <div> 
+                        <Row justify="center" gutter={[24,24]}>
+                            <Col>
+                                <Button type="dashed" shape="round" onClick = {handleOpenLoginDialog}>Login</Button>
+                            </Col>
+                            <Col>
+                                <Button type="primary" shape="round" onClick = {handleOpenRegisterDialog}>Register</Button>
+                            </Col>
+                        </Row>
+                        <hr />
+                        <Row justify="center" gutter={[24,24]}>
+                            <Col>
+                                <Button type="primary" shape="round" danger icon={<GoogleCircleFilled onClick={props.handleGoogleLogin} />} onClick={props.handleGoogleLogin}></Button>
+                            </Col>
+                            <Col>
+                                <Button type="primary" shape="round" icon={<FacebookFilled onClick={props.handleFacebookLogin} />} onClick={props.handleFacebookLogin}></Button>
+                            </Col>
+                        </Row>
+                    </div>  
                 }
             />
             <Modal className="modal" visible={modalLoginIsOpen} centered onCancel={() => handleCancel()} footer={[]}>

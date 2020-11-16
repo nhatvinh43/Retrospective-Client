@@ -7,7 +7,7 @@ const LoginPrompt = (props) =>
         <div>
             <Result
                 status="403"
-                title="Login or register to view your boards!"
+                title="Retrospective Manager"
                 extra={
                     <Row justify="center" gutter={[24,24]}>
                         <Col>

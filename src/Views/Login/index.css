@@ -1,3 +1,15 @@
 .main {
   height: 100vh;
 }
+
+hr {
+  border: 0.1px dashed gray;
+  opacity: 0.2;
+  outline: none;
+  width: 10vw;
+  margin-bottom: 20px;
+}
+
+.main {
+  margin: auto;
+}

@@ -1,11 +1,18 @@
 @import "~antd/dist/antd.css";
 
+body {
+  background-color: rgb(252, 252, 252);
+}
+
 .layout {
-  height: 100vh;
+  min-height: 100vh;
+  background-color: rgb(252, 252, 252);
 }
 
 .body {
   margin: 50px;
+  min-height: 100vh;
+  background-color: rgb(252, 252, 252);
 }
 
 .addIcons {
@@ -26,10 +33,6 @@
 
 .hidden {
   display: none;
-}
-
-#wentWellInput {
-  transition-duration: 200ms;
 }
 
 .card {

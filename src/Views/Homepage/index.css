@@ -4,7 +4,7 @@
   text-align: center;
 }
 
-.layout {
+.layoutH {
   height: 100vh;
 }
 
@@ -12,7 +12,7 @@
   display: none;
 }
 
-.body {
+.bodyH {
   margin: 50px;
   height: 100%;
 }

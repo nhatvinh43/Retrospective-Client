@@ -28,20 +28,26 @@
   display: none;
 }
 
-#wentWellInput {
-  transition-duration: 200ms;
-}
-
 .card {
+  max-width: 300px;
   border-radius: 20px;
-  width: 400px;
-  margin-top: 10px;
   margin-bottom: 10px;
 }
 
 .col {
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
+  align-items: middle;
+}
+
+.highlight {
+  background-color: #def3fd;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 350px;
+  padding: 10px;
+  border-radius: 20px;
 }
