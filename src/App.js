@@ -131,6 +131,12 @@ function App()
         placement: "bottomLeft"
       });
       setModalRegisterIsOpen(false);
+      
+      localStorage.setItem('token', msg.token);
+      setToken(msg.token);
+      setIsLogin(true);
+      setModalLoginOpen(false);
+      history.push('/dashboard');
     }
   }
 
@@ -211,7 +217,7 @@ function App()
         <Route exact path="/user" render={(props) => <LoginPrompt token = {token} {...props} handleFacebookLogin = {handleFacebookLogin} handleGoogleLogin = {handleGoogleLogin} isLogin={isLogin} handleLoginState={setIsLogin} handleLogin={handleLogin} handleRegister={handleRegister}/>}>
       
         </Route>
-          <Route path="/auth/success" render={(props) => <SuccessLogin {...props} setToken = {setToken} setIsLogin ={setIsLogin} />} > 
+          <Route path="/auth/success/:token" render={(props) => <SuccessLogin {...props} setToken = {setToken} setIsLogin ={setIsLogin} />} > 
         </Route>
         <Route exact path="/">
           <Redirect to="/dashboard" />

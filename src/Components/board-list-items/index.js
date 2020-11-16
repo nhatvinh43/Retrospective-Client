@@ -33,7 +33,7 @@ const BoardListItem = (props) =>
     const onShare = (e) =>
     {
         e.stopPropagation();
-        navigator.clipboard.writeText(process.env.REACT_APP_URL + process.env.PUBLIC_URL + "/#" + "/boards/" + props.board._id);
+        navigator.clipboard.writeText(process.env.REACT_APP_URL + "/#" + "/boards/" + props.board._id);
 
         notification.success({
             message: "Board URL copied to clipboard!",

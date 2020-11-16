@@ -80,12 +80,12 @@ function Homepage(props)
     setNewBoardName(value);
   }
 
-  const handleDeleteBoard = (id) =>
+  const handleDeleteBoard = async (id) =>
   {
 
     setSpinning(true);
 
-    fetch(process.env.REACT_APP_HOST + '/boards/delete', {
+    await fetch(process.env.REACT_APP_HOST + '/boards/delete', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

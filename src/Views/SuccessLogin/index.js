@@ -3,31 +3,17 @@ import './index.css'
 
 const SuccessLogin = (props) => {
     useEffect(() => {
-        const fetchUserData = async () => {
-            const result = await fetch(process.env.REACT_APP_HOST + "/auth/success", {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                  },
-            });
-
-            const msg = await result.json();
-
-            if(result.status===200 || result.status===304)
-            {
-                console.log(msg);
-                props.setIsLogin(true);
-                localStorage.setItem('token', msg.token);
-                props.setToken(msg.token);
-                props.history.push('/dashboard');
-            }
-
-            else{
-                props.history.push('/');
-            }
+    
+        const token = props.match.params.token;
+        if(!token)
+        {
+            props.history.push('/');
         }
-
-        fetchUserData();
+        props.setIsLogin(true);
+        localStorage.setItem('token', token);
+        props.setToken(token);
+        props.history.push('/dashboard');
+        
     }, []);
 
     return (
